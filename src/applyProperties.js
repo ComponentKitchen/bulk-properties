@@ -11,9 +11,6 @@ const booleanAttributes = {
 };
 
 
-const previousChildNodesMap = new WeakMap();
-
-
 /**
  * @param {Element} element 
  * @param {object} props
@@ -92,11 +89,6 @@ function applyAttributes(element, attributeProps) {
  * @param {NodeList|Node[]} childNodes
  */
 function applyChildNodes(element, childNodes) {
-  // Quick dirty check if last array applied was frozen.
-  if (childNodes === previousChildNodesMap.get(element)) {
-    return;
-  }
-
   const oldLength = element.childNodes.length;
   const newLength = childNodes.length;
   const length = Math.max(oldLength, newLength);
@@ -110,10 +102,6 @@ function applyChildNodes(element, childNodes) {
     } else if (i >= newLength) {
       element.removeChild(oldChild);
     }
-  }
-
-  if (Object.isFrozen(childNodes)) {
-    previousChildNodesMap.set(element, childNodes);
   }
 }
 

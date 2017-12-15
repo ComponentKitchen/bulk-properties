@@ -68,22 +68,8 @@ describe("applyProperties", () => {
     assert.equal(fixture.childNodes[1], childNodes[1]);
     assert.isNull(existingChild.parentNode);
   });
-
-  it("skips subsequent invocation with frozen childNodes", () => {
-    const fixture = document.createElement('div');
-    const text = new Text('foo');
-    const childNodes = [text];
-    Object.freeze(childNodes);
-    applyProperties(fixture, { childNodes });
-    assert.equal(fixture.childNodes.length, 1);
-    assert.equal(fixture.childNodes[0], text);
-    fixture.removeChild(text);
-    // Next line should have no effect.
-    applyProperties(fixture, { childNodes });
-    assert.equal(fixture.childNodes.length, 0);
-  });
   
-  it("merges new updates on top of existing attributes", () => {
+  it("applies multiple types of properties at once", () => {
     const template = document.createElement('template');
     template.innerHTML = `
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
