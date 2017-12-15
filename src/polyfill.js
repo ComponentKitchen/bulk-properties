@@ -1,26 +1,14 @@
-// import getProperties from './getProperties.js';
-// import mergeProperties from './mergeProperties.js';
-import setProperties from './setProperties.js';
-import setTreeProperties from './setTreeProperties.js';
-// import updateProperties from './updateProperties.js';
+import applyProperties from './applyProperties.js';
+import applyPropertiesToElements from './applyPropertiesToElements.js';
 
 
-// Element.prototype.getProperties = function() {
-//   return getProperties(this);
-// };
-
-Element.prototype.setProperties = function(props) {
-  return setProperties(this, props);
+Element.prototype.applyProperties = function(props) {
+  return applyProperties(this, props);
 };
 
-Element.prototype.setTreeProperties = function(props) {
-  return setTreeProperties(this, props);
+Document.prototype.applyPropertiesToElements = function(props) {
+  return applyPropertiesToElements(this, props);
 };
-
-// Element.prototype.updateProperties = function(props) {
-//   return updateProperties(this, props);
-// };
-
-// window.mergeProperties = function(props1, props2) {
-//   return mergeProperties(props1, props2);
-// };
+DocumentFragment.prototype.applyPropertiesToElements = function(props) {
+  return applyPropertiesToElements(this, props);
+};

@@ -1,4 +1,4 @@
-export const booleanAttributes = {
+const booleanAttributes = {
   checked: true,
   defer: true,
   disabled: true,
@@ -18,7 +18,7 @@ const previousChildNodesMap = new WeakMap();
  * @param {Element} element 
  * @param {object} props
  */
-export default function setProperties(element, props) {
+export default function applyProperties(element, props) {
   for (const key in props) {
     const value = props[key];
     switch (key) {
@@ -53,24 +53,20 @@ export default function setProperties(element, props) {
 /**
  * @param {Element} element 
  * @param {string} name 
- * @param {string|boolean|null} value 
+ * @param {string|boolean} value 
  */
-export function applyAttribute(element, name, value) {
-  const existingValue = element.getAttribute(name);
+function applyAttribute(element, name, value) {
   if (booleanAttributes[name]) {
     // Boolean attribute
-    const changed = (existingValue === null) === value;
-    if (changed) {
-      if (value) {
-        element.setAttribute(name, '');
-      } else {
-        element.removeAttribute(name);
-      }
+    if (value) {
+      element.setAttribute(name, '');
+    } else {
+      element.removeAttribute(name);
     }
-  } else if (existingValue !== value) {
+  } else {
     // Regular string-valued attribute
     if (value !== null) {
-      element.setAttribute(name, value.toString());
+      element.setAttribute(name, value);
     } else {
       element.removeAttribute(name);
     }
@@ -82,7 +78,7 @@ export function applyAttribute(element, name, value) {
  * @param {Element} element 
  * @param {any} attributeProps
  */
-export function applyAttributes(element, attributeProps) {
+function applyAttributes(element, attributeProps) {
   if (attributeProps) {
     for (const attributeName in attributeProps) {
       applyAttribute(element, attributeName, attributeProps[attributeName]);
@@ -95,7 +91,7 @@ export function applyAttributes(element, attributeProps) {
  * @param {Element} element 
  * @param {NodeList|Node[]} childNodes
  */
-export function applyChildNodes(element, childNodes) {
+function applyChildNodes(element, childNodes) {
   // Quick dirty check if last array applied was frozen.
   if (childNodes === previousChildNodesMap.get(element)) {
     return;
@@ -126,7 +122,7 @@ export function applyChildNodes(element, childNodes) {
  * @param {Element} element 
  * @param {any} classProps
  */
-export function applyClassList(element, classProps) {
+function applyClassList(element, classProps) {
   for (const className in classProps) {
     element.classList.toggle(className, classProps[className]);
   }
@@ -137,7 +133,7 @@ export function applyClassList(element, classProps) {
  * @param {HTMLElement|SVGElement} element 
  * @param {any} styleProps
  */
-export function applyStyle(element, styleProps) {
+function applyStyle(element, styleProps) {
   const style = element.style;
   for (const styleName in styleProps) {
     const value = styleProps[styleName];

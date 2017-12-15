@@ -22,7 +22,7 @@
   <script type="module">
     const instance = document.importNode(template.content, true);
     
-    instance.querySelector('#div').setProperties({
+    instance.querySelector('#div').applyProperties({
       attributes: {
         role: 'main'
       },
@@ -36,7 +36,7 @@
       }
     });
 
-    instance.querySelector('#greet').setProperties({
+    instance.querySelector('#greet').applyProperties({
       style: {
         fontWeight: 'bold'
       }

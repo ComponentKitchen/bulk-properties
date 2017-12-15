@@ -1,2 +1,0 @@
-
-const previousChildNodesKey = Symbol('previousChildNodes');
