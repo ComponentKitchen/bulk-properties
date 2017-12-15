@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Setting properties as an object</title>
+  <script type="module" src="../src/polyfill.js"></script>
+
+  <template id="template">
+    <div id="div" class="foo bar">
+      <div id="greet">Hello, world.</div>
+    </div>
+  </template>
+
+  <style>
+    .baz {
+      border: 1px solid gray;
+    }
+  </style>
+
+  <script type="module">
+    const instance = document.importNode(template.content, true);
+    
+    instance.querySelector('#div').setProperties({
+      attributes: {
+        role: 'main'
+      },
+      classList: {
+        bar: false,
+        baz: true
+      },
+      style: {
+        background: 'powderblue',
+        padding: '1em'
+      }
+    });
+
+    instance.querySelector('#greet').setProperties({
+      style: {
+        fontWeight: 'bold'
+      }
+    });
+
+    document.body.appendChild(instance);
+  </script>
+
+</head>
+
+<body></body>
+
+</html>

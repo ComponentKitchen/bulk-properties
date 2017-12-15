@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Setting properties as an object</title>
+  <script type="module" src="../src/polyfill.js"></script>
+
+  <style>
+    .baz {
+      border: 1px solid gray;
+    }
+  </style>
+
+  <script type="module">
+    document.body.setTreeProperties({
+      div: {
+        attributes: {
+          role: 'main'
+        },
+        classList: {
+          bar: false,
+          baz: true
+        },
+        style: {
+          background: 'powderblue',
+          padding: '1em'
+        }
+      },
+      greet: {
+        style: {
+          fontWeight: 'bold'
+        }
+      }
+    });
+  </script>
+
+</head>
+
+<body>
+  <div id="div" class="foo bar">
+    <div id="greet">Hello, world.</div>
+  </div>
+</body>
+
+</html>
