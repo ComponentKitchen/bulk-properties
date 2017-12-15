@@ -134,9 +134,5 @@ function applyClassList(element, classProps) {
  * @param {any} styleProps
  */
 function applyStyle(element, styleProps) {
-  const style = element.style;
-  for (const styleName in styleProps) {
-    const value = styleProps[styleName];
-    style[styleName] = value === undefined ? '' : value;
-  }
+  Object.assign(element.style, styleProps);
 }
