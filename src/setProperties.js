@@ -1,4 +1,3 @@
-
 export const booleanAttributes = {
   checked: true,
   defer: true,
@@ -10,6 +9,9 @@ export const booleanAttributes = {
   readonly: true,
   selected: true
 };
+
+
+const previousChildNodesMap = new WeakMap();
 
 
 /**
@@ -30,7 +32,7 @@ export default function setProperties(element, props) {
         break;
 
       case 'classList':
-        applyClasses(element, value);
+        applyClassList(element, value);
         break;
 
       case 'style':
@@ -95,7 +97,7 @@ export function applyAttributes(element, attributeProps) {
  */
 export function applyChildNodes(element, childNodes) {
   // Quick dirty check if last array applied was frozen.
-  if (element[previousChildNodesKey] && childNodes === element[previousChildNodesKey]) {
+  if (childNodes === previousChildNodesMap.get(element)) {
     return;
   }
 
@@ -114,22 +116,8 @@ export function applyChildNodes(element, childNodes) {
     }
   }
 
-  element[previousChildNodesKey] = Object.isFrozen(childNodes) ?
-    childNodes :
-    null;
-}
-
-
-/**
- * @param {Element} element 
- * @param {string} className
- * @param {boolean} value
- */
-export function applyClass(element, className, value) {
-  if (value) {
-    element.classList.add(className);
-  } else {
-    element.classList.remove(className);
+  if (Object.isFrozen(childNodes)) {
+    previousChildNodesMap.set(element, childNodes);
   }
 }
 
@@ -138,9 +126,9 @@ export function applyClass(element, className, value) {
  * @param {Element} element 
  * @param {any} classProps
  */
-export function applyClasses(element, classProps) {
+export function applyClassList(element, classProps) {
   for (const className in classProps) {
-    applyClass(element, className, classProps[className])
+    element.classList.toggle(className, classProps[className]);
   }
 }
 

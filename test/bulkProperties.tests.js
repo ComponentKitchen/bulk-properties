@@ -23,54 +23,24 @@ describe("updates helpers", () => {
     });
   });
 
-  it("updates.applyClass turns a class on or off", () => {
+  it("updates applies $ updates to referenced elements", () => {
     const fixture = document.createElement('div');
-    updates.applyClass(fixture, 'foo', true);
-    assert(fixture.classList.contains('foo'));
-    assert(!fixture.classList.contains('bar'));
-    updates.applyClass(fixture, 'bar', true);
-    assert(fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-    updates.applyClass(fixture, 'foo', false);
-    assert(!fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-    updates.applyClass(fixture, 'bar', false);
-    assert(!fixture.classList.contains('foo'));
-    assert(!fixture.classList.contains('bar'));
-  });
-
-  it("updates.applyClasses turns multiple classes on or off", () => {
-    const fixture = document.createElement('div');
-    updates.applyClasses(fixture, { 'foo': true, 'bar': true });
-    assert(fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-    updates.applyClasses(fixture, { 'foo': false });
-    assert(!fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-  });
-
-  it("updates.apply merges new updates on top of existing attributes", () => {
-    container.innerHTML = `
-      <div class="foo bar" style="color: red;" aria-selected="false"></div>
-    `;
-    const fixture = container.children[0];
+    fixture.$ = {
+      child: document.createElement('button')
+    };
+    fixture.appendChild(fixture.$.child);
     updates.apply(fixture, {
-      attributes: {
-        'aria-selected': 'true'
-      },
-      classes: {
-        foo: false,
-        bletch: true
-      },
-      style: {
-        color: 'green'
+      $: {
+        child: {
+          attributes: {
+            'aria-label': 'Label',
+            disabled: true
+          }
+        }
       }
     });
-    assert.equal(fixture.getAttribute('aria-selected'), 'true');
-    assert(!fixture.classList.contains('foo'));
-    assert(fixture.classList.contains('bar'));
-    assert(fixture.classList.contains('bletch'));
-    assert.equal(fixture.style.color, 'green');
+    assert(fixture.$.child.disabled);
+    assert.equal(fixture.$.child.getAttribute('aria-label'), 'Label');
   });
 
   it("updates.merge with no arguments returns an empty object", () => {
@@ -114,74 +84,6 @@ describe("updates helpers", () => {
     assert.equal(merged.customProperty0, 'Hello');
     assert.equal(merged.customProperty1, 1);
     assert.equal(merged.customProperty2, true);
-  });
-
-  it("updates.applyAttribute handles regular attributes", () => {
-    const fixture = document.createElement('div');
-    updates.applyAttribute(fixture, 'aria-selected', 'true');
-    assert.equal(fixture.getAttribute('aria-selected'), 'true');
-    updates.applyAttribute(fixture, 'aria-selected', null);
-    assert.equal(fixture.getAttribute('aria-selected'), null);
-  });
-
-  it("updates.applyAttribute handles boolean attributes", () => {
-    const fixture = document.createElement('button');
-    updates.applyAttribute(fixture, 'disabled', true);
-    assert.equal(fixture.disabled, true);
-    updates.applyAttribute(fixture, 'disabled', false);
-    assert.equal(fixture.disabled, false);
-  });
-
-  it("updates.applyChildNodes updates child nodes", () => {
-    const fixture = document.createElement('div');
-    const existingChild = document.createTextNode('existing');
-    fixture.appendChild(existingChild);
-    const nodes = [
-      document.createTextNode('one'),
-      document.createTextNode('two')
-    ];
-    updates.applyChildNodes(fixture, nodes);
-    assert.equal(fixture.childNodes.length, 2);
-    assert.equal(fixture.childNodes[0], nodes[0]);
-    assert.equal(fixture.childNodes[1], nodes[1]);
-    assert.isNull(existingChild.parentNode);
-  });
-
-  it("updates.apply with childNodes updates child nodes", () => {
-    const fixture = document.createElement('div');
-    const existingChild = document.createTextNode('existing');
-    fixture.appendChild(existingChild);
-    const nodes = [
-      document.createTextNode('one'),
-      document.createTextNode('two')
-    ];
-    updates.apply(fixture, {
-      childNodes: nodes
-    });
-    assert.equal(fixture.childNodes.length, 2);
-    assert.equal(fixture.childNodes[0], nodes[0]);
-    assert.equal(fixture.childNodes[1], nodes[1]);
-    assert.isNull(existingChild.parentNode);
-  });
-
-  it("updates applies $ updates to referenced elements", () => {
-    const fixture = document.createElement('div');
-    fixture.$ = {
-      child: document.createElement('button')
-    };
-    fixture.appendChild(fixture.$.child);
-    updates.apply(fixture, {
-      $: {
-        child: {
-          attributes: {
-            'aria-label': 'Label',
-            disabled: true
-          }
-        }
-      }
-    });
-    assert(fixture.$.child.disabled);
-    assert.equal(fixture.$.child.getAttribute('aria-label'), 'Label');
   });
 
   it("merge can merge $ updates", () => {
@@ -243,7 +145,5 @@ describe("updates helpers", () => {
     };
     assert.deepEqual(actual, expected);
   });
-
-  it("")
 
 });

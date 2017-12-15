@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Test Suite</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/mocha@4.0.1/mocha.css">
+  <script src="https://unpkg.com/mocha@4.0.1/mocha.js" type="text/javascript"></script>
+  <script src="https://unpkg.com/chai@4.1.2/chai.js" type="text/javascript"></script>
+
+  <script>
+    mocha.setup('bdd');
+    window.assert = chai.assert;
+  </script>
+
+  <script type="module">
+    import * as tests from './tests.js';
+    mocha.run();
+  </script>
+  
+</head>
+
+<body>
+  <!-- Required for browser reporter -->
+  <div id="mocha"></div>
+</body>
+
+</html>
