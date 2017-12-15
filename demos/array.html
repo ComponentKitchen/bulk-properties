@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Create an array of elements</title>
+  <script type="module" src="../src/polyfill.js"></script>
+
+  <script type="module">
+    const childNodes = [];
+    for (let i = 0; i < 255; i += 16) {
+      const color = `rgb(${i}, ${i}, ${i})`;
+      const node = document.createElement('div', {
+        style: { color },
+        textContent: color
+      });
+      childNodes.push(node);
+    }
+    
+    document.body.applyProperties({ childNodes });
+  </script>
+
+</head>
+
+<body></body>
+
+</html>
