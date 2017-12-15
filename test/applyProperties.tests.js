@@ -68,6 +68,16 @@ describe("applyProperties", () => {
     assert.equal(fixture.childNodes[1], childNodes[1]);
     assert.isNull(existingChild.parentNode);
   });
+
+  it("sets custom properties", () => {
+    const fixture = document.createElement('div');
+    applyProperties(fixture, {
+      foo: true,
+      bar: 'Hello'
+    });
+    assert(fixture.foo);
+    assert.equal(fixture.bar, 'Hello');
+  });
   
   it("applies multiple types of properties at once", () => {
     const template = document.createElement('template');
@@ -75,6 +85,7 @@ describe("applyProperties", () => {
       <div class="foo bar" style="color: red;" aria-selected="false"></div>
     `;
     const fixture = template.content.children[0];
+    const childNodes = [new Text('Hello')];
     applyProperties(fixture, {
       attributes: {
         role: 'main'
@@ -83,15 +94,20 @@ describe("applyProperties", () => {
         foo: false,
         bletch: true
       },
+      childNodes,
       style: {
         color: 'green'
-      }
+      },
+      custom: true
     });
     assert.equal(fixture.getAttribute('role'), 'main');
     assert(!fixture.classList.contains('foo'));
     assert(fixture.classList.contains('bar'));
     assert(fixture.classList.contains('bletch'));
+    assert.deepEqual(fixture.childNodes.length, 1);
+    assert.equal(fixture.childNodes[0], childNodes[0]);
     assert.equal(fixture.style.color, 'green');
+    assert(fixture.custom);
   });
 
 });
