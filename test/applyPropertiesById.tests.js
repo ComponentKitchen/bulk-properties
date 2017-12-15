@@ -1,7 +1,7 @@
-import applyPropertiesToElements from '../src/applyPropertiesToElements.js';
+import applyPropertiesById from '../src/applyPropertiesById.js';
 
 
-describe("applyPropertiesToElements", () => {
+describe("applyPropertiesById", () => {
 
   it("applies properties to referenced elements", () => {
     const template = document.createElement('template');
@@ -10,7 +10,7 @@ describe("applyPropertiesToElements", () => {
       <div id='bar'></div>
     `
     const fixture = template.content;
-    applyPropertiesToElements(fixture, {
+    applyPropertiesById(fixture, {
       foo: {
         attributes: {
           role: 'main'

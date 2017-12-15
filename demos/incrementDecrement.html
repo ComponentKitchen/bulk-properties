@@ -41,7 +41,7 @@
 
       render() {
         const value = this.state.value;
-        this.shadowRoot.applyPropertiesToElements({
+        this.shadowRoot.applyPropertiesById({
           decrement: {
             attributes: {
               disabled: value <= this.state.min

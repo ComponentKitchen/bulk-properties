@@ -1,14 +1,14 @@
 import applyProperties from './applyProperties.js';
-import applyPropertiesToElements from './applyPropertiesToElements.js';
+import applyPropertiesById from './applyPropertiesById.js';
 
 
 Element.prototype.applyProperties = function(props) {
   return applyProperties(this, props);
 };
 
-Document.prototype.applyPropertiesToElements = function(props) {
-  return applyPropertiesToElements(this, props);
+Document.prototype.applyPropertiesById = function(props) {
+  return applyPropertiesById(this, props);
 };
-DocumentFragment.prototype.applyPropertiesToElements = function(props) {
-  return applyPropertiesToElements(this, props);
+DocumentFragment.prototype.applyPropertiesById = function(props) {
+  return applyPropertiesById(this, props);
 };

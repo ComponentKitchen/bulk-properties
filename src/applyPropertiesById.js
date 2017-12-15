@@ -1,7 +1,7 @@
 import applyProperties from './applyProperties.js';
 
 
-export default function applyPropertiesToElements(root, map) {
+export default function applyPropertiesById(root, map) {
   for (const id in map) {
     const element = root.getElementById(id);
     if (element) {
