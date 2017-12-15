@@ -35,6 +35,8 @@ export default function applyProperties(element, props) {
       case 'style':
         if (element instanceof HTMLElement || element instanceof SVGElement) {
           applyStyle(element, value);
+        } else {
+          throw `Attempted to set styles on an element with no "style" property.`;
         }
         break;
 

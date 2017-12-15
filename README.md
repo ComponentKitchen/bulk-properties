@@ -1,33 +1,177 @@
-# Bulk properties
+# Bulk property updates for HTML elements
 
-Goals
+This repository considers the possibility of introducing new DOM API methods to efficiently set multiple HTML element properties at once, on either a single element or a collection of elements identified with `id`s.
 
-* Facilitate population of DOM from JavaScript, e.g., from objects reconstructed from JSON.
-* Support fast updates in Functional-Reactive Programming (FRP) architectures.
-* Work well with web components.
+Example:
 
-https://github.com/JedWatson/classnames
+```js
+const div = document.createElement('div');
+div.applyProperties({
+  attributes: {
+    role: 'main'
+  },
+  style: {
+    color: 'red'
+  },
+  textContent: 'Hello, world.'
+});
+```
+
+[Live demo](***link***) ([Source](***link***))
+
+The above is exactly equivalent to:
+
+```js
+const div = document.createElement('div');
+div.setAttribute('role', 'main');
+div.style.color = 'red';
+div.textContent = 'Hello, world.';
+```
+
+In either case, the result is the same:
+
+```html
+<div role="main" style="color: red;">Hello, world.<div>
+```
 
 
-## Setting bulk properties
+## Goals
 
-* `attributes`: Dictionary in which each `name: value` is equivalent to calling `setAttribute(key, value)`. Known Boolean attributes (`checked`,`defer`,`disabled`,`hidden`,`ismap`,`multiple`,`noresize`,`readonly`,`selected`) have special behavior: a falsy `value` results in a call to `removeAttribute(key)`.
-* `classList`: Dictionary in which each `name: value` is equivalent to calling `classList.toggle(name, value)`.
-* `style`: Dictionary in which each `name: value` is equivalent to calling `style[name] = value`.
-* `childNodes`: A `NodeList` or `Array` of `Node` elements. Equivalent to calling `appendChild()` for each item in the list/array.
-
-All other keys result in invoking a _property_ (not attribute) with the indicated key.
+* Generally facilitate population and manipulation of DOM from JavaScript, e.g., in Functional-Reactive Programming (FRP) architectures.
+* Support fast updates by allow bulk properties to be set in a single transaction.
+* Work well with web components that want to reflect state changes in their shadow trees.
 
 
-## Getting bulk properties
+## `applyProperties` method
+
+The `applyProperties` method would be added to `Element.prototype`. This method applies a dictionary of properties to the indicated element.
 
 
-## Updating a tree of elements
+### Modifying traditionally read-only properties
 
-node tree, document fragment, shadow tree
+The `Element` prototype exposes several read-only properties that exposes some form of read-only collection: `attributes`, `childNodes`, `classList`, and (for `HTMLElement` and `SVGElement`) `style`. Although these properties cannot be directly set, we can define simple and useful write semantics for them in the context of the `applyProperties` method.
+
+In each case, we define the write semantics in terms of existing DOM write methods:
+
+* `attributes` property: Sets multiple attributes at once. This takes a subdictionary in which each `name: value` is equivalent to calling `setAttribute(key, value)`. Passing a nullish `value` results in a call to `removeAttribute(key)`. Known Boolean attributes (e.g., `disabled`) are slightly different: a truthy `value` results in a call to `setAttribute(key, '')`, and a falsy `value` results in a call to `removeAttribute(key)`.
+
+* `childNodes` property: Sets an element's `childNodes`. This takes a `NodeList` or array of `Node` elements. This is equivalent to calling `removeChild()` on any nodes _not_ in the supplied `NodeList` or array, then calling `appendChild()` for each node in the supplied `NodeList` or array.
+
+* `classList` property: Sets/clears multiple classes at once. This takes a subdictionary in which each `name: value` is equivalent to calling `classList.toggle(name, value)`.
+
+* `style` property: Sets multiple style values at once. This takes a subdictionary in which each `name: value` is equivalent to calling `style[name] = value`. Attempting to update `style` on something other than a `HTMLElement` or `SVGElement` throws an exception.
+
+Note that `applyProperties` is _updating_ the indicated element, leaving in place any other existing element attributes, classes, or styles not specifically referenced in the dictionary:
+
+```js
+const div = document.createElement('div');
+div.classList.add('foo bar');
+div.applyProperties({
+  classList: {
+    bar: false, // Removes bar
+    baz: true   // Adds baz
+  }
+});
+div.classList.value // "foo baz"
+```
+
+The ability to update `childNodes` facilitates construct of DOM through code that, for example, maps an array of model objects to an array of DOM elements, then wants to get that array of elements into the DOM quickly.
+
+```js
+const objects = [...];
+const elements = objects.map(object => 
+  document.createElement('div', { properties })
+);
+document.body.applyProperties({
+  childNodes: elements
+});
+```
 
 
-## Updating properties
 
-If the supplied dictionary is frozen, and equal to the previous value, the update is skipped.
-Same thing for dictionary values, including `attributes`, `classList`, `style`, and `childNodes`.
+
+### Modifying other properties
+
+All other property dictionary keys result in invoking a _property_ (not attribute) with the indicated key. E.g.,
+
+```js
+element.applyProperties({ foo: 'bar' });
+```
+
+is equivalent to
+
+```js
+element.foo = 'bar';
+```
+
+This can be used to set both native HTML element properties as well as custom element properties.
+
+
+## `applyPropertiesById` method
+
+A related method, `applyPropertiesById`, allows the application of properties to a set of elements identified by `id`. This method would be exposed on `Document` and `DocumentFragment`.
+
+```html
+<body>
+  <div id="foo">
+    <div id="bar"></div>
+  </div>
+</body>
+```
+
+```js
+document.applyPropertiesById({
+  foo: {
+    style: {
+      color: 'red'
+    }
+  },
+  bar: {
+    textContent: 'Hello, world'
+  }
+});
+```
+
+For each `key: value` in the supplied dictionary, `applyPropertiesById` takes the `key` as an `id`, and finds the corresponding element in the tree via `getElementById(key)`. If the element is found, it passes the `value` as a property dictionary to `applyProperties(element, value)`.
+
+The above results in:
+
+```html
+<body>
+  <div id="foo" style="color: red;">
+    <div id="bar">Hello, world.</div>
+  </div>
+</body>
+```
+
+
+*** demo ***
+
+The use of `applyPropertiesById` is particularly useful in web components that want to reflect component state in their shadow tree. E.g., when component state changes, it might invoke
+
+```js
+const changes = {
+  element1: { /* changes for element1 */ },
+  element2: { /* changes for element2 */ },
+  ...
+}
+this.shadowRoot.applyPropertiesById(changes);
+```
+
+Web components example
+
+
+## `document.createElement` parameter
+
+It would be useful to accept the same properties dictionary as an options parameter to `createElement`/`createElementNS`:
+
+```js
+const element = document.createElement('div', {
+  style: {
+    color: 'red'
+  },
+  textContent: 'Hello, world.'
+});
+```
+
+`createElement`/`createElementNS` currently accept an second argument with options, currently just the standard (but not universally supported) `is` option. There are several ways the existing options parameter could be reconciled with the suggestion above, but it's not worth hashing that out at this point.

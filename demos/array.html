@@ -8,21 +8,28 @@
   <script type="module" src="../src/polyfill.js"></script>
 
   <script type="module">
-    const childNodes = [];
+    // Create an array of elements.
+    const elements = [];
     for (let i = 0; i < 255; i += 16) {
       const color = `rgb(${i}, ${i}, ${i})`;
       const node = document.createElement('div', {
         style: { color },
         textContent: color
       });
-      childNodes.push(node);
+      elements.push(node);
     }
-    
-    document.body.applyProperties({ childNodes });
+
+    // Apply that array as child nodes of the indicated container.
+    colors.applyProperties({
+      childNodes: elements
+    });
   </script>
 
 </head>
 
-<body></body>
+<body>
+  <h1>Colors</h1>
+  <div id="colors"></div>
+</body>
 
 </html>
