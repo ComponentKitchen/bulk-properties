@@ -164,10 +164,13 @@ this.shadowRoot.applyPropertiesById(changes);
 
 ## `document.createElement` parameter
 
-It would be useful to accept the same properties dictionary as an options parameter to `createElement`/`createElementNS`:
+It would be useful to accept the same properties dictionary as an options parameter to `createElement`/`createElementNS`. The example at the top of this document could be written more concisely as:
 
 ```js
 const element = document.createElement('div', {
+  attributes: {
+    role: 'main'
+  },
   style: {
     color: 'red'
   },
@@ -175,4 +178,4 @@ const element = document.createElement('div', {
 });
 ```
 
-`createElement`/`createElementNS` currently accept an second argument with options, currently just the standard (but not universally supported) `is` option. There are several ways the existing options parameter could be reconciled with the suggestion above, but it's not worth hashing that out at this point.
+Note: `createElement`/`createElementNS` currently accept an second argument with options, currently just the standard (but not universally supported) `is` option. There are likely several ways the existing options parameter could be reconciled with the suggestion above.
