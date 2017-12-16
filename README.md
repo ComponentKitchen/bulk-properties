@@ -47,9 +47,9 @@ In either case, the result is the same:
 The `applyProperties` method would be added to `Element.prototype`. This method applies a dictionary of properties to the indicated element.
 
 
-### Modifying traditionally read-only properties
+### Modifying designated collection properties
 
-The `Element` prototype exposes several read-only properties that exposes some form of collection that can be modified but not set directly: `attributes`, `childNodes`, `classList`, and (for `HTMLElement` and `SVGElement`) `style`. Although these properties cannot be directly set, we can define simple and useful write semantics for them in the context of the `applyProperties` method.
+The `Element` prototype exposes several properties that expose a collection that can be modified but not set directly: `attributes`, `childNodes`, `classList`, and (for `HTMLElement` and `SVGElement`) `style`. Although these properties cannot be directly set (you can't write `element.attributes = newAttributes`), we can define simple and useful write semantics for updating these properties in the context of the `applyProperties` method.
 
 In each case, we define the write semantics in terms of existing DOM write methods:
 
@@ -135,7 +135,7 @@ document.applyPropertiesById({
 
 [Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/applyPropertiesById.html) ([Source](demos/applyPropertiesById.html))
 
-For each `key: value` in the supplied dictionary, `applyPropertiesById` takes the `key` as an `id`, and finds the corresponding element in the tree via `getElementById(key)`. If the element is found, it passes the `value` as a property dictionary to `applyProperties(element, value)`.
+For each `key: value` in the supplied dictionary, `applyPropertiesById` takes the `key` as an `id`, and finds the corresponding element in the relevant tree via `getElementById(key)`. If the element is found, it passes the `value` as a property dictionary to `applyProperties(element, value)`.
 
 The above code is exactly equivalent to:
 
