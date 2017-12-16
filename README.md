@@ -178,4 +178,4 @@ const element = document.createElement('div', {
 });
 ```
 
-Note: `createElement`/`createElementNS` currently accept an second argument with options, currently just the standard (but not universally supported) `is` option. There are likely several ways the existing options parameter could be reconciled with the suggestion above.
+Note: `createElement`/`createElementNS` currently accept an additional argument with `options`, which at the moment is just the standard (but not universally supported) `is` option. There are likely several ways the existing options parameter could be reconciled with the suggestion above.
