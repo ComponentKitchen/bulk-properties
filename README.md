@@ -37,9 +37,9 @@ In either case, the result is the same:
 
 ## Goals
 
-* Generally facilitate population and manipulation of DOM from JavaScript, e.g., in Functional-Reactive Programming (FRP) architectures.
-* Support fast updates by allow bulk properties to be set in a single transaction.
-* Work well with web components that want to reflect state changes in their shadow trees.
+* Generally facilitate population and manipulation of DOM from JavaScript, e.g., in Functional-Reactive Programming (FRP) architectures. Rather that introducing new capabilities, this simply formalizes very common JavaScript patterns for creating and updating DOM elements.
+* Support fast updates by allowing the browser to update multiple properties and elements in a single DOM call.
+* Allow web components to efficiently reflect state changes in their shadow trees.
 
 
 ## `applyProperties` method
