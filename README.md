@@ -49,19 +49,19 @@ The `applyProperties` method would be added to `Element.prototype`. This method 
 
 ### Modifying traditionally read-only properties
 
-The `Element` prototype exposes several read-only properties that exposes some form of read-only collection: `attributes`, `childNodes`, `classList`, and (for `HTMLElement` and `SVGElement`) `style`. Although these properties cannot be directly set, we can define simple and useful write semantics for them in the context of the `applyProperties` method.
+The `Element` prototype exposes several read-only properties that exposes some form of collection that can be modified but not set directly: `attributes`, `childNodes`, `classList`, and (for `HTMLElement` and `SVGElement`) `style`. Although these properties cannot be directly set, we can define simple and useful write semantics for them in the context of the `applyProperties` method.
 
 In each case, we define the write semantics in terms of existing DOM write methods:
 
 * `attributes` property: Sets multiple attributes at once. This takes a subdictionary in which each `name: value` is equivalent to calling `setAttribute(key, value)`. Passing a nullish `value` results in a call to `removeAttribute(key)`. Known Boolean attributes (e.g., `disabled`) are slightly different: a truthy `value` results in a call to `setAttribute(key, '')`, and a falsy `value` results in a call to `removeAttribute(key)`.
 
-* `childNodes` property: Sets an element's `childNodes`. This takes a `NodeList` or array of `Node` elements. This is equivalent to calling `removeChild()` on any nodes _not_ in the supplied `NodeList` or array, then calling `appendChild()` for each node in the supplied `NodeList` or array.
+* `childNodes` property: Sets an element's `childNodes`. This takes a `NodeList` or array of `Node` elements. This is equivalent to calling `removeChild()` on any nodes _not_ in the supplied value, then calling `appendChild()` for each node in the supplied value.
 
 * `classList` property: Sets/clears multiple classes at once. This takes a subdictionary in which each `name: value` is equivalent to calling `classList.toggle(name, value)`.
 
 * `style` property: Sets multiple style values at once. This takes a subdictionary in which each `name: value` is equivalent to calling `style[name] = value`. Attempting to update `style` on something other than a `HTMLElement` or `SVGElement` throws an exception.
 
-Note that `applyProperties` is _updating_ the indicated element, leaving in place any other existing element attributes, classes, or styles not specifically referenced in the dictionary:
+Note that `applyProperties` is _updating_ the indicated properties, leaving in place any other existing element attributes, classes, or styles not specifically referenced in the dictionary:
 
 ```js
 const div = document.createElement('div');
@@ -75,7 +75,7 @@ div.applyProperties({
 div.classList.value // "foo baz"
 ```
 
-The ability to update `childNodes` facilitates construct of DOM through code that, for example, maps an array of model objects to an array of DOM elements, then wants to get that array of elements into the DOM quickly.
+The ability to update `childNodes` facilitates construction of DOM through code that, for example, maps an array of model objects to an array of DOM elements that should be added to the DOM.
 
 ```js
 const objects = [...];
@@ -93,7 +93,7 @@ document.body.applyProperties({
 
 ### Modifying other properties
 
-All other property dictionary keys result in invoking a _property_ (not attribute) with the indicated key. E.g.,
+All other property dictionary keys result in invoking the property with the corresponding name. E.g.,
 
 ```js
 element.applyProperties({ foo: 'bar' });
