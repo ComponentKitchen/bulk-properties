@@ -17,8 +17,6 @@ div.applyProperties({
 });
 ```
 
-[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/hello.html) ([Source](demos/hello.html))
-
 The above is exactly equivalent to:
 
 ```js
@@ -33,6 +31,8 @@ In either case, the result is the same:
 ```html
 <div role="main" style="color: red;">Hello, world.<div>
 ```
+
+[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/hello.html) ([Source](demos/hello.html))
 
 
 ## Goals
