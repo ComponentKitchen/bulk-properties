@@ -53,7 +53,7 @@ The `Element` prototype exposes several properties that expose a collection that
 
 In each case, we define the write semantics in terms of existing DOM write methods:
 
-* `attributes` property: Sets multiple attributes at once. This takes a subdictionary in which each `name: value` is equivalent to calling `setAttribute(key, value)`. Passing a nullish `value` results in a call to `removeAttribute(key)`. Known Boolean attributes (e.g., `disabled`) are slightly different: a truthy `value` results in a call to `setAttribute(key, '')`, and a falsy `value` results in a call to `removeAttribute(key)`.
+* `attributes` property: Sets multiple attributes at once. This takes a subdictionary in which each `name: value` is equivalent to calling `setAttribute(key, value)`. Passing a nullish `value` acts like `removeAttribute(key)`. Known Boolean attributes (e.g., `disabled`) are slightly different: a truthy `value` has the effects of `setAttribute(key, '')`, and a falsy `value` acts like `removeAttribute(key)`.
 
 * `childNodes` property: Sets an element's `childNodes`. This takes a `NodeList` or array of `Node` elements. This is equivalent to calling `removeChild()` on any nodes _not_ in the supplied value, then calling `appendChild()` for each node in the supplied value.
 
