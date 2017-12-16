@@ -133,6 +133,8 @@ document.applyPropertiesById({
 });
 ```
 
+[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/applyPropertiesById.html) ([Source](demos/applyPropertiesById.html))
+
 For each `key: value` in the supplied dictionary, `applyPropertiesById` takes the `key` as an `id`, and finds the corresponding element in the tree via `getElementById(key)`. If the element is found, it passes the `value` as a property dictionary to `applyProperties(element, value)`.
 
 The above code is exactly equivalent to:
@@ -153,8 +155,6 @@ In both cases, the result is:
   </div>
 </body>
 ```
-
-[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/applyPropertiesById.html) ([Source](demos/applyPropertiesById.html))
 
 
 The use of `applyPropertiesById` is particularly useful in web components that want to reflect component state in their shadow tree. E.g., when component state changes, it might invoke
