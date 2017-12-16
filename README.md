@@ -17,7 +17,7 @@ div.applyProperties({
 });
 ```
 
-[Live demo](https://rawgit.com/ComponentKitchen/bulk-properties/master/demos/hello.html) ([Source](demos/hello.html))
+[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/hello.html) ([Source](demos/hello.html))
 
 The above is exactly equivalent to:
 
@@ -87,7 +87,7 @@ document.body.applyProperties({
 });
 ```
 
-[Live demo](https://rawgit.com/ComponentKitchen/bulk-properties/master/demos/array.html) ([Source](demos/array.html))
+[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/array.html) ([Source](demos/array.html))
 
 
 
@@ -145,7 +145,7 @@ The above results in:
 </body>
 ```
 
-[Live demo](https://rawgit.com/ComponentKitchen/bulk-properties/master/demos/applyPropertiesById.html) ([Source](demos/applyPropertiesById.html))
+[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/applyPropertiesById.html) ([Source](demos/applyPropertiesById.html))
 
 
 The use of `applyPropertiesById` is particularly useful in web components that want to reflect component state in their shadow tree. E.g., when component state changes, it might invoke
@@ -159,7 +159,7 @@ const changes = {
 this.shadowRoot.applyPropertiesById(changes);
 ```
 
-[Live demo](https://rawgit.com/ComponentKitchen/bulk-properties/master/demos/incrementDecrement.html) ([Source](demos/incrementDecrement.html))
+[Live demo](https://cdn.rawgit.com/ComponentKitchen/bulk-properties/21136154/demos/incrementDecrement.html) ([Source](demos/incrementDecrement.html))
 
 
 ## `document.createElement` parameter
