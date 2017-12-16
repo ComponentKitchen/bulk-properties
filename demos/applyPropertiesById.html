@@ -7,31 +7,15 @@
   <title>Apply properties to multiple elements</title>
   <script type="module" src="../src/polyfill.js"></script>
 
-  <style>
-    .baz {
-      border: 1px solid gray;
-    }
-  </style>
-
   <script type="module">
     document.applyPropertiesById({
-      div: {
-        attributes: {
-          role: 'main'
-        },
-        classList: {
-          bar: false,
-          baz: true
-        },
+      foo: {
         style: {
-          background: 'powderblue',
-          padding: '1em'
+          color: 'red'
         }
       },
-      greet: {
-        style: {
-          fontWeight: 'bold'
-        }
+      bar: {
+        textContent: 'Hello, world.'
       }
     });
   </script>
@@ -39,8 +23,8 @@
 </head>
 
 <body>
-  <div id="div" class="foo bar">
-    <div id="greet">Hello, world.</div>
+  <div id="foo">
+    <div id="bar"></div>
   </div>
 </body>
 
