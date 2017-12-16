@@ -128,14 +128,23 @@ document.applyPropertiesById({
     }
   },
   bar: {
-    textContent: 'Hello, world'
+    textContent: 'Hello, world.'
   }
 });
 ```
 
 For each `key: value` in the supplied dictionary, `applyPropertiesById` takes the `key` as an `id`, and finds the corresponding element in the tree via `getElementById(key)`. If the element is found, it passes the `value` as a property dictionary to `applyProperties(element, value)`.
 
-The above results in:
+The above code is exactly equivalent to:
+
+```js
+const foo = document.getElementById('foo');
+foo.style.color = 'red';
+const bar = document.getElementById('bar');
+bar.textContent = 'Hello, world.';
+```
+
+In both cases, the result is:
 
 ```html
 <body>
