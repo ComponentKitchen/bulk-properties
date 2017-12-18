@@ -17,7 +17,7 @@ div.applyProperties({
 });
 ```
 
-The above is exactly equivalent to:
+The above would be exactly equivalent to:
 
 ```js
 const div = document.createElement('div');
@@ -26,7 +26,7 @@ div.style.color = 'red';
 div.textContent = 'Hello, world.';
 ```
 
-In either case, the result is the same:
+In either case, the result would be the same:
 
 ```html
 <div role="main" style="color: red;">Hello, world.<div>
